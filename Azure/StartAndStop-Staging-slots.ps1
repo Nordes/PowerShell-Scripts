@@ -56,4 +56,4 @@ foreach ($website In $azureWS)
 
 Write-Host ""
 $TextInfo = (Get-Culture).TextInfo
-Write-host "INFO: $($TextInfo.ToTitleCase($message)) all staging slots action complete" -foregroundcolor "Yellow"
+Write-host "INFO: $($TextInfo.ToTitleCase($message)) all staging slots -> Action complete" -foregroundcolor "Yellow"
