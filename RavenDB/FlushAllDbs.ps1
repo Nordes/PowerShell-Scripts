@@ -1,5 +1,4 @@
 $ravenUrl = "http://localhost:8080"
-$req = [System.Net.WebRequest]::Create("$ravenUrl/databases?PageSize=1024")
 
 # To exclude some databases you can put the databases in a list
 #   Example: @("Master", "Tasks")
@@ -11,12 +10,29 @@ $req = [System.Net.WebRequest]::Create("$ravenUrl/databases?PageSize=1024")
 #   Example: @("Master", "Tasks")
 [string[]] $toDeleteDbList = @()
 
-$response = $req.GetResponse()
-$reqstream = $response.GetResponseStream()
+#Function... 
+function FetchAllDb(){
+    $currentIdx = 0
+    $pageSize = 1024
+    $allDbs = New-Object System.Collections.ArrayList($null)
+    do {
+        $req = [System.Net.WebRequest]::Create("$ravenUrl/databases?PageSize=$pageSize&start=$currentIdx")
 
-$sr = new-object System.IO.StreamReader $reqstream
-$result = $sr.ReadToEnd()
-$resultObj = ConvertFrom-Json $result
+        $response = $req.GetResponse()
+        $reqstream = $response.GetResponseStream()
+
+        $sr = new-object System.IO.StreamReader $reqstream
+        $result = $sr.ReadToEnd()
+        $resultObj = ConvertFrom-Json $result
+        $allDbs.AddRange($resultObj)
+
+        $currentIdx += $resultObj.Count
+    } while ($resultObj.Count -eq $pageSize)
+
+    return $allDbs
+}
+
+$resultObj = FetchAllDb
 
 if ($toDeleteDbList.Count -gt 0)
 {
