@@ -1,9 +1,9 @@
 ###########################################################################
 ############### Stop or start Production azure slot #######################
 ###########################################################################
-$needToConnectToAzureAccount = $false
-$testRun = $true
-$stopStagingSlot = $false
+$needToConnectToAzureAccount = $false # Set to $true if you need to connect to your azure account
+$testRun = $true # Set to $true if you want to only test what it will start/stop
+$stopStagingSlot = $false # Set to $true if you want to stop the staging slots
 $subscriptionId = "YourSubscriptionId"
 
 # Connect to the azure account
