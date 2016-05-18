@@ -4,8 +4,8 @@
 # Example of call: 
 #   > .\StartAndStop-Azure-WebSites.ps1 -testRun -stop -servers @("*(staging)") -azurePublishSettingsPath c:\\folder\publish.publishsettings
 # Result: 
-#   Start the process in test run to start servers that finish with "(staging)" in 
-#   their names.
+#   Start the process in test run to stop web app from the specified subscription in publish
+#   setting files that finish with "(staging)" in their names.
 ###########################################################################
 [CmdletBinding()]
 Param(
