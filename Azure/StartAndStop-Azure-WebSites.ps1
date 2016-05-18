@@ -1,11 +1,16 @@
 ###########################################################################
 ############### Start or Stop websites ####################################
+# Example of call: 
+#   > .\StartAndStop-Azure-WebSites.ps1 -testRun true -stop false -servers @("*(staging)")
+# Result: 
+#   Start the process in test run to start servers that finish with "(staging)" in 
+#   their names.
 ###########################################################################
 Param(
-    $testRun = $true,                                           # Set to $true if you want to only test what it will start/stop
-    $stop = $true,                                              # Set to $true if you want to stop the staging slots
-    $servers = @("*(staging)"),                                 # Example with wildcards to get all the staging slots
-    $azurePublishSettings = "C:\\path\\server-credentials.publishsettings" # Can be downloaded easilly from Azure portal
+    [bool]$testRun = $true,                 # Set to $true if you want to only test what it will start/stop
+    [bool]$stop = $true,                    # Set to $true if you want to stop the staging slots
+    [string[]]$servers = @("*(staging)"),   # Example with wildcards to get all the staging slots
+    [string]$azurePublishSettings = "C:\\path\\server-credentials.publishsettings" # Can be downloaded easilly from Azure portal
 )
 
 # Connect to the azure account
