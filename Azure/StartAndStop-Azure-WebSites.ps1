@@ -6,12 +6,33 @@
 #   Start the process in test run to start servers that finish with "(staging)" in 
 #   their names.
 ###########################################################################
+[CmdletBinding()]
 Param(
-    [bool]$testRun = $true,                 # Set to $true if you want to only test what it will start/stop
-    [bool]$stop = $true,                    # Set to $true if you want to stop the staging slots
-    [string[]]$servers = @("*(staging)"),   # Example with wildcards to get all the staging slots
-    [string]$azurePublishSettings = "C:\\path\\server-credentials.publishsettings" # Can be downloaded easilly from Azure portal
+    # Set to $true if you want to only test what it will start/stop
+    [Parameter(Mandatory=$false)]
+    [switch]$testRun = $true,                                           
+    
+    # Set to $true if you want to stop the staging slots
+    [Parameter(Mandatory=$false)]
+    [bool]$stop = $true,                                              
+    
+    # Example with wildcards to get all the staging slots
+    [Parameter(Mandatory=$false)]
+    [string[]]$servers = @("*(staging)"),   
+    
+    # Can be downloaded easilly from Azure portal
+    [Parameter(Mandatory=$false)]
+    [string]$azurePublishSettings = "C:\\path\\server-credentials.publishsettings",
+    
+    # Help
+    [Parameter(Mandatory=$false)]
+    [switch]$help
 )
+
+if ($help){
+    Write-Host "Help... to be defined."
+    exit 0;
+}
 
 # Connect to the azure account
 if ($azurePublishSettings) {# Have a value
