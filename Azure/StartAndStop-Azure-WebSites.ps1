@@ -5,21 +5,21 @@ Param(
     $testRun = $true,                                           # Set to $true if you want to only test what it will start/stop
     $stop = $true,                                              # Set to $true if you want to stop the staging slots
     $servers = @("*(staging)"),                                 # Example with wildcards to get all the staging slots
-	$azurePublishSettings = "C:\\path\\server-credentials.publishsettings" # Can be downloaded easilly from Azure portal
+    $azurePublishSettings = "C:\\path\\server-credentials.publishsettings" # Can be downloaded easilly from Azure portal
 )
 
 # Connect to the azure account
 if ($azurePublishSettings) {# Have a value
-	$subInfo = Import-AzurePublishSettingsFile $azurePublishSettings
+    $subInfo = Import-AzurePublishSettingsFile $azurePublishSettings
 } else {
-	write-host "Error: Please fill the azurePublishSettings variable." -foregroundcolor Red
-	exit 1;
+    write-host "Error: Please fill the azurePublishSettings variable." -foregroundcolor Red
+    exit 1;
 }
 
 if ($testRun -eq $true) {
     write-host "DEBUG: TestRun active. Be aware that nothing will be started or stopped." -ForegroundColor Cyan 
 }
-	
+    
 # Select the subscription and set it as Default
 Write-Host "INFO: Selecting azure subscription" -ForegroundColor Yellow
 Select-AzureSubscription -SubscriptionId $subInfo.Id -Default $subInfo.Account
@@ -29,14 +29,14 @@ Select-AzureSubscription -SubscriptionId $subInfo.Id -Default $subInfo.Account
 #
 function validateServerNameV2($websites, $servers)
 {
-	$result = @();
-	# websites is a more complex type than an array
-	foreach ($server in $servers)
-	{
-		$result += $websites | where-object { $_.Name -like $server }
-	}
-	
-	return $result;
+    $result = @();
+    # websites is a more complex type than an array
+    foreach ($server in $servers)
+    {
+        $result += $websites | where-object { $_.Name -like $server }
+    }
+    
+    return $result;
 }
 
 # Filter to get only the slots (quick query, since we don't want to query each website in a big environment)
