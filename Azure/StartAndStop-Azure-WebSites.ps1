@@ -1,44 +1,56 @@
 ###########################################################################
 ############### Start or Stop websites ####################################
+#--------------------------------------------------------------------------
 # Example of call: 
-#   > .\StartAndStop-Azure-WebSites.ps1 -testRun true -stop false -servers @("*(staging)")
+#   > .\StartAndStop-Azure-WebSites.ps1 -testRun -stop -servers @("*(staging)") -azurePublishSettingsPath c:\\folder\publish.publishsettings
 # Result: 
 #   Start the process in test run to start servers that finish with "(staging)" in 
 #   their names.
 ###########################################################################
 [CmdletBinding()]
 Param(
-    # Set to $true if you want to only test what it will start/stop
+    # Test what web application will start or stop
     [Parameter(Mandatory=$false)]
-    [switch]$testRun = $true,                                           
+    [switch]$testRun,
     
-    # Set to $true if you want to stop the staging slots
+    # Stops the web application if activated
     [Parameter(Mandatory=$false)]
-    [bool]$stop = $true,                                              
+    [switch]$stop,
     
-    # Example with wildcards to get all the staging slots
+    # Default (all) using wildcards
     [Parameter(Mandatory=$false)]
-    [string[]]$servers = @("*(staging)"),   
+    [string[]]$servers = @("*"),
     
-    # Can be downloaded easilly from Azure portal
-    [Parameter(Mandatory=$false)]
-    [string]$azurePublishSettings = "C:\\path\\server-credentials.publishsettings",
-    
+    # Path to azure publish settings. It can be downloaded easilly from Azure portal
+    [Parameter(Mandatory=$true)]
+    [string]$azurePublishSettingsPath,
+
     # Help
     [Parameter(Mandatory=$false)]
-    [switch]$help
+    [switch]$help,
+
+    # Default execution
+    [Parameter(Mandatory=$false)]
+    [switch]$default
 )
 
+if ($default){
+    $testRun = $true;
+    $stop = $true;
+    $servers = @("*");
+    $azurePublishSettingsPath = "C:\\folder\\credentials.publishsettings";
+}
+
 if ($help){
-    Write-Host "Help... to be defined."
+    Write-Host "Help..."
     exit 0;
 }
 
 # Connect to the azure account
-if ($azurePublishSettings) {# Have a value
-    $subInfo = Import-AzurePublishSettingsFile $azurePublishSettings
+if ($azurePublishSettingsPath) {# Have a value
+    $subInfo = Import-AzurePublishSettingsFile $azurePublishSettingsPath
 } else {
-    write-host "Error: Please fill the azurePublishSettings variable." -foregroundcolor Red
+    write-host "Error: Please fill the azurePublishSettingsPath variable." -foregroundcolor Red
     exit 1;
 }
 
@@ -47,7 +59,7 @@ if ($testRun -eq $true) {
 }
     
 # Select the subscription and set it as Default
-Write-Host "INFO: Selecting azure subscription" -ForegroundColor Yellow
+Write-host "INFO: Selecting azure subscription" -ForegroundColor Yellow
 Select-AzureSubscription -SubscriptionId $subInfo.Id -Default $subInfo.Account
 
 #
