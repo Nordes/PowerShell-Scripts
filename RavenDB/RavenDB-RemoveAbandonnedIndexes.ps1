@@ -5,6 +5,8 @@
 #   > .\RavenDB-RemoveAbandonnedIndexes.ps1 -testRun -server "http://localhost:8080"
 # Result: 
 #   Start the process in test run to show what will be deleted from the specified RavenDB URL
+# Tested on:
+#   RavenDB 2.5
 ###########################################################################
 [CmdletBinding()]
 Param(
