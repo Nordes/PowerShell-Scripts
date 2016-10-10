@@ -26,9 +26,9 @@ Param(
 if ($help){
     Write-Host "==============================="
     Write-Host "Parameters:"
-    Write-Host " -help         : This documentation"
-    Write-Host " -server ""URI"" : Specify what RavenDB Server the application will call"
-    Write-Host " -testRun      : Indicate if we will delete or just display what will be deleted"
+    Write-Host " -help           : This documentation"
+    Write-Host " -ravenUrl ""URI"" : Specify what RavenDB Server the application will call"
+    Write-Host " -testRun        : Indicate if we will delete or just display what will be deleted"
     Write-Host "==============================="
     exit 0;
 }
